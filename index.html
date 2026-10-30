@@ -1213,14 +1213,14 @@ const dist2 = (ax, ay, bx, by) => (ax-bx)*(ax-bx) + (ay-by)*(ay-by);
 
 /* ---------- weapons and items ---------- */
 const WEAPONS = {
-  sword:    {name:"Baseball Bat",     info:["Swings in front of you","More damage","Also swings behind you","Bigger, harder swings","Fast, huge swings"],
-             dmg:[14,18,22,28,34], cd:[1.25,1.15,1.05,.95,.85], r:[34,36,40,46,52]},
+  sword:    {name:"Baseball Bat",     info:["Swings in front of you","Also swings behind you","More damage, longer reach","Faster, harder swings","Huge, fast swings"],
+             dmg:[16,18,23,28,34], cd:[1.0,.95,.9,.8,.7], r:[50,52,58,62,70]},
   knives:   {name:"Throwing Stars",   info:["Throws a star at the nearest zombie","Throws 2 stars","Stars go through zombies","Throws 3 stars","Throws 4 razor stars"],
-             dmg:[7,9,10,12,14], cd:[.9,.8,.72,.64,.55], n:[1,2,2,3,4], pierce:[1,1,2,2,3]},
+             dmg:[8,10,11,13,15], cd:[.75,.68,.62,.56,.5], n:[1,2,2,3,4], pierce:[1,1,2,2,3]},
   bow:      {name:"Laser Blaster",    info:["Fires lasers the way you're walking","Lasers hit harder","Fires 2 lasers","Fires 3 lasers","Lasers that pierce whole hordes"],
-             dmg:[11,14,17,20,24], cd:[1.4,1.3,1.15,1,.9], n:[1,1,2,3,3], pierce:[3,4,5,6,8]},
+             dmg:[12,15,18,21,25], cd:[1.2,1.1,1.0,.9,.8], n:[1,1,2,3,3], pierce:[3,4,5,6,8]},
   axe:      {name:"Vinyl Records",    info:["Flings a spinning record up high","More damage","Flings 2 records","Heavier records","Flings 3 records"],
-             dmg:[18,24,28,34,40], cd:[1.7,1.6,1.45,1.3,1.15], n:[1,1,2,2,3]},
+             dmg:[20,25,30,36,42], cd:[1.5,1.4,1.3,1.2,1.05], n:[1,1,2,2,3]},
   shields:  {name:"Disco Balls",      info:["2 disco balls circle around you","Disco balls hit harder","3 disco balls","4 disco balls","5 dazzling disco balls"],
              dmg:[7,9,11,13,16], n:[2,2,3,4,5]},
   flask:    {name:"Slime Grenade",    info:["Lobs a grenade that leaves toxic slime","Bigger slime puddles","Lobs 2 grenades","Stronger slime","Lobs 3 grenades"],
@@ -1228,7 +1228,7 @@ const WEAPONS = {
   lightning:{name:"Tesla Coil",       info:["Zaps a zombie with lightning","Zaps 2 zombies","Stronger zaps","Zaps 3 zombies","Zaps 4 zombies, faster"],
              dmg:[18,24,30,36,44], cd:[2.1,1.9,1.7,1.5,1.25], n:[1,2,2,3,4]},
   aura:     {name:"Boombox",          info:["Sound waves hurt zombies close to you","Wider sound waves","Louder, stronger waves","Even wider and louder","Maximum volume"],
-             dmg:[3,4,5,6,8], r:[28,32,37,42,48]},
+             dmg:[4,5,6,7,9], r:[32,36,40,45,50]},
 };
 const PASSIVES = {
   armor:  {name:"Letterman Jacket",   info:"Take 1 less damage per hit"},
@@ -1241,12 +1241,12 @@ const PASSIVES = {
 };
 /* ---------- enemies ---------- */
 const ENEMIES = {
-  bat:        {hp:4,   spd:56, dmg:4,  xp:1, r:4},
-  rat:        {hp:6,   spd:42, dmg:4,  xp:1, r:4},
+  bat:        {hp:4,   spd:46, dmg:4,  xp:1, r:4},
+  rat:        {hp:6,   spd:36, dmg:4,  xp:1, r:4},
   skeleton:   {hp:13,  spd:34, dmg:6,  xp:2, r:5},
-  goblin:     {hp:11,  spd:47, dmg:5,  xp:2, r:5},
+  goblin:     {hp:11,  spd:42, dmg:5,  xp:2, r:5},
   zombie:     {hp:24,  spd:26, dmg:8,  xp:3, r:5},
-  wolf:       {hp:17,  spd:64, dmg:7,  xp:3, r:6},
+  wolf:       {hp:17,  spd:56, dmg:7,  xp:3, r:6},
   ghost:      {hp:20,  spd:38, dmg:7,  xp:3, r:5},
   orc:        {hp:48,  spd:30, dmg:12, xp:6, r:7},
   darkknight: {hp:75,  spd:34, dmg:14, xp:8, r:6},
@@ -1375,7 +1375,7 @@ function newRun(){
   const c = curCar();
   Object.assign(game, {t:0, time:0, px:0, py:0, vx:0, vy:0, face:1, fx_:1, fy_:0, walkT:0, hp:100, maxHp:100, lvl:1, xp:0, xpNeed:5, kills:0, runCoins:0, iframe:0, hurtFlash:0,
     enemies:[], projs:[], pools:[], pickups:[], fx:[], texts:[], weapons:{}, passives:{}, cds:{}, orbitA:0, shieldHits:new Map(), auraT:0,
-    spawnAcc:0, nextBoss:100, bossIdx:0, nextSwarm:45, choices:null, pendingLevels:0, dragon:null, dragonWarn:0, dragonSlain:false, killedBy:"",
+    props:[], propT:0, spawnAcc:0, nextBoss:100, bossIdx:0, nextSwarm:45, choices:null, pendingLevels:0, dragon:null, dragonWarn:0, dragonSlain:false, killedBy:"",
     banner:{text: worldOf(c).name, sub: TEST.on ? "Test run" : "Survive as long as you can!", t:2.2}, flash:0, paused:false});
   game.weapons = startWeapons(c); game.pw = POWER[c.tier]; game.maxHp = game.hp = game.pw.hp;
   game.dragonAt = TEST.dragon ? 6 : (!TEST.on && Math.random() < DRAGON_CHANCE ? rand(150, 330) : Infinity); TEST.dragon = false;
@@ -1383,8 +1383,8 @@ function newRun(){
 function stat(k){ const p = game.passives, w = game.pw || POWER[0];
   switch (k){
     case "armor": return (p.armor || 0) + w.armor;
-    case "speed": return 74 * w.speed * (1 + .08*(p.boots || 0));
-    case "magnet": return 34 * w.magnet * (1 + .3*(p.magnet || 0));
+    case "speed": return 86 * w.speed * (1 + .08*(p.boots || 0));
+    case "magnet": return 42 * w.magnet * (1 + .3*(p.magnet || 0));
     case "cd": return w.cd * Math.pow(.93, p.haste || 0);
     case "might": return w.might + .1*(p.might || 0);
     case "area": return 1 + .1*(p.area || 0);
@@ -1417,9 +1417,9 @@ function poolFor(min){
   return p;
 }
 function spawnEnemy(type, x, y){
-  const d = ENEMIES[type], min = game.time/60, scale = 1.12 + min*.19;
+  const d = ENEMIES[type], min = game.time/60, scale = 1 + min*.18;
   if (x === undefined){ const a = Math.random()*Math.PI*2, R = Math.hypot(GW, GH)/2 + 16; x = game.px + Math.cos(a)*R; y = game.py + Math.sin(a)*R; }
-  const e = {type, x, y, hp: d.hp*scale*(d.boss ? 1 + min*.1 : 1), maxHp: 0, spd: d.spd*rand(.95, 1.15)*(1 + Math.min(.25, min*.03)), dmg: d.dmg*(1.15 + min*.07), r: d.r, xp: d.xp, boss: d.boss, hit:0, kx:0, ky:0, ph: Math.random()*6, summonT: 4};
+  const e = {type, x, y, hp: d.hp*scale*(d.boss ? 1 + min*.1 : 1), maxHp: 0, spd: d.spd*rand(.9, 1.08)*(1 + Math.min(.12, min*.015)), dmg: d.dmg*(1 + min*.06), r: d.r, xp: d.xp, boss: d.boss, hit:0, kx:0, ky:0, ph: Math.random()*6, summonT: 4};
   e.maxHp = e.hp; game.enemies.push(e); return e;
 }
 function spawnRing(type, n){ const R = Math.min(GW, GH)/2 + 10; for (let i = 0; i < n; i++){ const a = i/n*Math.PI*2; spawnEnemy(type, game.px + Math.cos(a)*R, game.py + Math.sin(a)*R); } }
@@ -1429,7 +1429,7 @@ function nearestEnemy(maxD){ let best = null, bd = maxD*maxD; for (const e of ga
 function onScreen(e){ return Math.abs(e.x - game.px) < GW/2 + 10 && Math.abs(e.y - game.py) < GH/2 + 10; }
 function damage(e, amt, kx, ky){
   amt *= stat("might"); e.hp -= amt; e.hit = .12;
-  if (!e.boss && !e.isDragon){ e.kx += (kx || 0)*60; e.ky += (ky || 0)*60; }
+  if (!e.boss && !e.isDragon && !e.isProp){ e.kx += (kx || 0)*60; e.ky += (ky || 0)*60; }
   if (false) game.texts.push({x:e.x + rand(-3, 3), y:e.y - 12, txt:String(Math.round(amt)), life:.5, col: e.isDragon ? "#ffd34d" : "#ffffff"});
   Sound.hit();
   if (e.hp <= 0 && !e.dead) kill(e);
@@ -1437,23 +1437,25 @@ function damage(e, amt, kx, ky){
 function kill(e){
   e.dead = true;
   if (e.isDragon) return dragonDown();
+  if (e.isProp){ const r = Math.random(), k = r < .45 ? "chicken" : r < .65 ? "bag" : r < .85 ? "vac" : "nuke"; game.pickups.push({k, x:e.x, y:e.y - 2}); Sound.hit();
+    for (let i = 0; i < 6; i++) game.fx.push({k:"spark", x:e.x, y:e.y - 8, vx:rand(-50, 50), vy:rand(-70, 0), life:.4, col:["#ff4fa3","#2de2e6","#ffd34d"][i % 3]}); return; }
   game.kills++;
   const v = e.xp; game.pickups.push({k:"gem", x:e.x, y:e.y - 3, v, col: v >= 25 ? "#ff4a4a" : v >= 5 ? "#5fe03a" : "#4aa8ff"});
   if (e.boss){ game.pickups.push({k:"chest", x:e.x + 8, y:e.y}); for (let i = 0; i < 5; i++) game.pickups.push({k:"coin", x:e.x + rand(-14, 14), y:e.y + rand(-14, 14)}); Sound.bossDown(); game.banner = {text: e.boss + " defeated!", sub:"Grab the crate it dropped", t:2}; }
   else if (Math.random() < .025) game.pickups.push({k:"coin", x:e.x, y:e.y});
-  else if (Math.random() < .0035) game.pickups.push({k:"chicken", x:e.x, y:e.y});
+  else if (Math.random() < .006) game.pickups.push({k:"chicken", x:e.x, y:e.y});
   for (let i = 0; i < 4; i++) game.fx.push({k:"spark", x:e.x, y:e.y - 5, vx:rand(-50, 50), vy:rand(-60, 10), life:.3, col: "#8ab07a"});
 }
 function fireWeapons(dt){
   const W = game.weapons, cdm = stat("cd"), area = stat("area");
   const ready = (k, cd) => { game.cds[k] = (game.cds[k] || 0) - dt; if (game.cds[k] <= 0){ game.cds[k] = cd*cdm; return true; } return false; };
-  const targets = () => { const list = game.enemies.filter(onScreen); if (game.dragon && game.dragon.alive && onScreen(game.dragon)) list.push(game.dragon); return list; };
+  const targets = () => { const list = game.enemies.filter(onScreen); if (game.dragon && game.dragon.alive && onScreen(game.dragon)) list.push(game.dragon); game.props.forEach(p => { if (!p.dead && onScreen(p)) list.push(p); }); return list; };
   for (const k in W){
     const L = W[k] - 1, d = WEAPONS[k];
     if (k === "sword" && ready(k, d.cd[L])){
-      const r = d.r[L]*area, dirs = W[k] >= 3 ? [game.face, -game.face] : [game.face];
+      const r = d.r[L]*area, dirs = W[k] >= 2 ? [game.face, -game.face] : [game.face];
       dirs.forEach(dir => { game.fx.push({k:"slash", dir, r, life:.2, max:.2});
-        targets().forEach(e => { const dx = (e.x - game.px)*dir, dy = e.y - 6 - game.py + 10; if (dx > -6 && dx < r + e.r && Math.abs(dy) < r*.6 + e.r) damage(e, d.dmg[L], dir, 0); }); });
+        targets().forEach(e => { const dx = (e.x - game.px)*dir, dy = e.y - 6 - game.py + 10; if (dx > -10 && dx < r + e.r && Math.abs(dy) < r*.55 + e.r) damage(e, d.dmg[L], dir*2.5, 0); }); });
       Sound.slash();
     }
     if (k === "knives" && ready(k, d.cd[L])){
@@ -1493,7 +1495,7 @@ function fireWeapons(dt){
   }
 }
 function updateProjs(dt){
-  const hitables = game.enemies.concat(game.dragon && game.dragon.alive ? [game.dragon] : []);
+  const hitables = game.enemies.concat(game.dragon && game.dragon.alive ? [game.dragon] : [], game.props.filter(p => !p.dead));
   game.projs.forEach(p => {
     if (p.k === "flask"){ p.t += dt; const f = Math.min(1, p.t/p.dur); p.x = game.px + (p.tx - game.px)*f; p.y = (game.py - 12) + (p.ty - game.py + 12)*f - Math.sin(f*Math.PI)*30;
       if (f >= 1){ p.dead = true; game.pools.push({x:p.tx, y:p.ty, r:p.r, life:2.6, tick:0, dmg:p.dmg}); Sound.fire(); } return; }
@@ -1573,7 +1575,7 @@ function optInfo(o){ return o.type === "w" ? WEAPONS[o.k].info[o.lv - 1] : o.typ
 /* ---------- player ---------- */
 function hurt(amt, by){
   if (game.iframe > 0 || game.state !== "running") return;
-  const dmg = Math.max(1, amt - stat("armor")); game.hp -= dmg; game.iframe = .38; Sound.hurt();
+  const dmg = Math.max(1, amt - stat("armor")); game.hp -= dmg; game.iframe = .45; Sound.hurt();
   if (game.hp <= 0){ game.hp = 0; game.killedBy = by || ""; Sound.death(); for (let i = 0; i < 20; i++) game.fx.push({k:"spark", x:game.px, y:game.py - 10, vx:rand(-90, 90), vy:rand(-120, 20), life:.7, col:"#e0263a"}); endRun(); }
 }
 const keys = {};
@@ -1600,7 +1602,7 @@ function update(dt){
   if (ix || iy){ game.walkT += dt; const m = Math.hypot(ix, iy); game.fx_ = ix/m; game.fy_ = iy/m; if (Math.abs(ix) > .2) game.face = ix > 0 ? 1 : -1; } else game.walkT = 0;
   // spawn
   const min = game.time/60, alive = game.enemies.length, dragonOn = game.dragon && game.dragon.alive;
-  const rate = (1.25 + min*1.45 + min*min*.12) * (dragonOn ? .4 : 1);
+  const rate = (0.9 + min*1.35 + min*min*.12) * (dragonOn ? .4 : 1);
   game.spawnAcc += rate*dt;
   const pool = poolFor(Math.floor(min));
   while (game.spawnAcc >= 1){ game.spawnAcc--; if (alive < 280) spawnEnemy(pool[Math.floor(Math.random()*pool.length)]); }
@@ -1621,11 +1623,15 @@ function update(dt){
     for (let ox = -1; ox <= 1 && n < 6; ox++) for (let oy = -1; oy <= 1 && n < 6; oy++){ const c = grid.get((gx+ox) + "," + (gy+oy)); if (!c) continue;
       for (const o of c){ if (o === e) continue; const ex = e.x - o.x, ey = e.y - o.y, dd = ex*ex + ey*ey, rr = (e.r + o.r)*.9; if (dd < rr*rr && dd > .01){ const m = Math.sqrt(dd), push = (rr - m)*.5; e.x += ex/m*push; e.y += ey/m*push; n++; } } }
     if (e.type === "necro"){ e.summonT -= dt; if (e.summonT <= 0){ e.summonT = 5; for (let i = 0; i < 5; i++) spawnEnemy("goblin", e.x + rand(-20, 20), e.y + rand(-20, 20)); } }
-    if (d < e.r + 6) hurt(e.dmg, e.boss || e.type);
+    if (d < e.r + 4) hurt(e.dmg, e.boss || e.type);
     if (game.state !== "running") return;
     if (d > Math.hypot(GW, GH)*.9 && !e.boss){ const a = Math.random()*Math.PI*2, R = Math.hypot(GW, GH)/2 + 16; e.x = game.px + Math.cos(a)*R; e.y = game.py + Math.sin(a)*R; }
   }
   game.enemies = game.enemies.filter(e => !e.dead);
+  // keep a few prize machines around the park
+  game.propT -= dt;
+  if (game.propT <= 0){ game.propT = 2.5; game.props = game.props.filter(p => !p.dead && dist2(p.x, p.y, game.px, game.py) < 520*520);
+    if (game.props.filter(p => dist2(p.x, p.y, game.px, game.py) < 320*320).length < 3){ const a = Math.random()*Math.PI*2, R = rand(120, 240); game.props.push({isProp:true, x: game.px + Math.cos(a)*R, y: game.py + Math.sin(a)*R, hp:1, r:6, kind: Math.random() < .5 ? 0 : 1}); } }
   fireWeapons(dt);
   updateProjs(dt);
   // the dragon's fire hurts you
@@ -1639,7 +1645,10 @@ function update(dt){
     if (d < 9){ p.got = true;
       if (p.k === "gem") gainXp(p.v);
       else if (p.k === "coin"){ addCoins(1); Sound.coin(); }
-      else if (p.k === "chicken"){ game.hp = Math.min(game.maxHp, game.hp + 30); Sound.heal(); }
+      else if (p.k === "chicken"){ game.hp = Math.min(game.maxHp, game.hp + 35); Sound.heal(); }
+      else if (p.k === "bag"){ addCoins(5); Sound.coin(); }
+      else if (p.k === "vac"){ game.pickups.forEach(q => { if (q.k === "gem") q.pull = true; }); Sound.chestGet(); game.banner = {text:"Tractor beam!", sub:"Every gem flies to you", t:1.3}; }
+      else if (p.k === "nuke"){ game.enemies.forEach(e => { if (!e.boss && onScreen(e)) kill(e); }); game.fx.push({k:"ring", life:.6, max:.6}); Sound.bossDown(); game.banner = {text:"Boom box blast!", sub:"Every zombie on screen is gone", t:1.3}; }
       else if (p.k === "chest"){ Sound.chestGet(); addCoins(3); game.pendingLevels++; openLevelUp(); }
       if (game.state !== "running") break; }
   }
@@ -1692,11 +1701,20 @@ function draw(){
       ctx.globalAlpha = .8*a; ctx.fillStyle = "#c8ffa8"; for (let i = 0; i < 6; i++){ const fx = pl.x + Math.cos(i*1.7)*pl.r*.55, fy = pl.y + Math.sin(i*2.3)*pl.r*.3; ctx.beginPath(); ctx.arc(SX(fx), SY(fy), 1.5, 0, Math.PI*2); ctx.fill(); } ctx.globalAlpha = 1; });
     // aura
     if (game.weapons.aura){ const r = WEAPONS.aura.r[game.weapons.aura - 1]*stat("area"); ctx.fillStyle = "rgba(255,79,163,.08)"; ctx.beginPath(); ctx.arc(SX(game.px), SY(game.py - 8), r, 0, Math.PI*2); ctx.fill(); ctx.lineWidth = 1; [1, .7, .4].forEach((k, i) => { ctx.strokeStyle = i % 2 ? "rgba(45,226,230,.35)" : "rgba(255,79,163,.4)"; ctx.beginPath(); ctx.arc(SX(game.px), SY(game.py - 8), r*k, 0, Math.PI*2); ctx.stroke(); }); }
+    // prize machines (break them!)
+    game.props.forEach(p => { if (p.dead) return; const x = SX(p.x), y = SY(p.y); if (x < -12 || y < -20 || x > GW + 12 || y > GH + 12) return;
+      ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(x - 6, y - 1, 12, 2);
+      if (p.kind === 0){ ctx.fillStyle = "#e0263a"; ctx.fillRect(x - 4, y - 6, 8, 6); ctx.fillStyle = "#c8ccd8"; ctx.fillRect(x - 1, y - 4, 2, 2); ctx.fillStyle = "rgba(220,240,255,.85)"; ctx.beginPath(); ctx.arc(x, y - 11, 5, 0, Math.PI*2); ctx.fill();
+        ["#ff4fa3","#2de2e6","#ffd34d","#7dff5a"].forEach((c, i) => { ctx.fillStyle = c; ctx.fillRect(x - 3 + (i % 2)*3, y - 13 + Math.floor(i/2)*3, 2, 2); }); ctx.fillStyle = "#e0263a"; ctx.fillRect(x - 2, y - 17, 4, 2); }
+      else { ctx.fillStyle = "#2a2448"; ctx.fillRect(x - 5, y - 16, 10, 16); ctx.fillStyle = "#ff4fa3"; ctx.fillRect(x - 5, y - 16, 10, 2); ctx.fillStyle = "#2de2e6"; ctx.fillRect(x - 3, y - 13, 6, 5); ctx.fillStyle = "#ffd34d"; ctx.fillRect(x - 2, y - 6, 1, 2); ctx.fillStyle = "#e0263a"; ctx.fillRect(x + 1, y - 6, 2, 2); } });
     // pickups
     game.pickups.forEach(p => { const x = SX(p.x), y = SY(p.y); if (x < -10 || y < -10 || x > GW + 10 || y > GH + 10) return;
       if (p.k === "gem"){ ctx.fillStyle = p.col; ctx.fillRect(x - 1, y - 3, 3, 6); ctx.fillRect(x - 2, y - 2, 5, 4); ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.fillRect(x - 1, y - 2, 1, 2); }
       else if (p.k === "coin"){ ctx.fillStyle = "#a8701c"; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = "#f2b33d"; ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = "#fff3b0"; ctx.fillRect(x - 1, y - 2, 1, 2); }
-      else if (p.k === "chicken") drawIcon({k:"chicken"}, x, y, 1);
+      else if (p.k === "chicken") drawIcon({k:"chicken"}, x, y, 1.2);
+      else if (p.k === "bag"){ drawIcon({k:"gold"}, x, y, 1.2); }
+      else if (p.k === "vac"){ drawIcon({k:"magnet"}, x, y, 1.1); }
+      else if (p.k === "nuke"){ drawIcon({k:"aura"}, x, y, 1.1); ctx.fillStyle = "#ffd34d"; ctx.fillRect(x - 1, y - 9, 2, 2); }
       else if (p.k === "chest"){ const b = 0; ctx.fillStyle = "rgba(255,211,77,.3)"; ctx.beginPath(); ctx.arc(x, y - 4, 10 + b, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = "#6a3a18"; ctx.fillRect(x - 6, y - 9, 12, 9); ctx.fillStyle = "#ffd34d"; ctx.fillRect(x - 6, y - 6, 12, 1); ctx.fillRect(x - 1, y - 7, 2, 3); ctx.fillStyle = "#8a5228"; ctx.fillRect(x - 6, y - 9, 12, 2); } });
     // enemies
     for (const e of game.enemies){ const x = SX(e.x), y = SY(e.y); if (x < -30 || y < -10 || x > GW + 30 || y > GH + 40) continue;
@@ -1738,7 +1756,7 @@ function draw(){
     }
     // effects
     game.fx.forEach(p => {
-      if (p.k === "slash"){ const k = 1 - p.life/p.max, x = GW/2, y = GH/2 - 2, r = p.r*.75, dir = p.dir;
+      if (p.k === "slash"){ const k = 1 - p.life/p.max, x = GW/2, y = GH/2 - 2, r = p.r*.9, dir = p.dir;
         // a faint swept trail, then the bat itself at the front of the swing
         ctx.strokeStyle = "rgba(255,138,194,.22)"; ctx.lineWidth = 3; ctx.beginPath();
         const a0 = -1.1, a1 = -1.1 + 2.2*k; if (dir > 0) ctx.arc(x, y, r, a0, a1); else ctx.arc(x, y, r, Math.PI - a1, Math.PI - a0); ctx.stroke();
@@ -1746,6 +1764,7 @@ function draw(){
         ctx.fillStyle = "#c8925a"; ctx.fillRect(6, -1, r - 6, 3); ctx.fillRect(r - 8, -2, 8, 4); ctx.fillStyle = "#1c1c22"; ctx.fillRect(5, -1, 2, 3); ctx.restore(); }
       else if (p.k === "bolt"){ const x = SX(p.x), y = SY(p.y), a = Math.min(1, p.life/p.max*1.5); ctx.globalAlpha = a*.85; ctx.fillStyle = "#bfe6ff"; let bx = x;
         for (let yy = y - 60, n = 0; yy < y; yy += 6, n++){ const nx = x + Math.round(Math.sin(p.x*.7 + n*2.3)*4); ctx.fillRect(Math.min(bx, nx), yy, Math.abs(nx - bx) + 2, 6); bx = nx; } ctx.globalAlpha = 1; }
+      else if (p.k === "ring"){ const k = 1 - p.life/p.max; ctx.strokeStyle = `rgba(255,79,163,${.5*(1 - k)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(GW/2, GH/2, 20 + k*GW*.7, 0, Math.PI*2); ctx.stroke(); }
       else if (p.k === "spark"){ ctx.globalAlpha = Math.min(1, p.life*3); ctx.fillStyle = p.col; ctx.fillRect(SX(p.x), SY(p.y), 2, 2); ctx.globalAlpha = 1; } });
     game.texts.forEach(p => { ctx.globalAlpha = Math.min(1, p.life*3); text(p.txt, SX(p.x), SY(p.y), 6, p.col, "center", "num"); ctx.globalAlpha = 1; });
   }
